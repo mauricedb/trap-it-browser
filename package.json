@@ -1,0 +1,9 @@
+{
+  "name": "trap-it-browser",
+  "version": "0.0.0",
+  "description": "Log unhandled errors in the browser",
+  "main": "index.js",
+  "repository": "git@github.com:mauricedb/trap-it-browser.git",
+  "author": "Maurice de Beijer <maurice.de.beijer@gmail.com>",
+  "license": "MIT"
+}
