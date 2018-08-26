@@ -5,5 +5,13 @@
   "main": "index.js",
   "repository": "git@github.com:mauricedb/trap-it-browser.git",
   "author": "Maurice de Beijer <maurice.de.beijer@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "start": "rollup --config"
+  },
+  "devDependencies": {
+    "rollup": "^0.65.0",
+    "rollup-plugin-typescript2": "^0.16.1",
+    "typescript": "^3.0.1"
+  }
 }
