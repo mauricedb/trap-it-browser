@@ -1,9 +1,9 @@
 import typescript from 'rollup-plugin-typescript2';
 
 export default {
-  input: './src/main.ts',
+  input: './src/trap-it.ts',
   output: {
-    file: './dist/main.js',
+    file: './dist/trap-it.js',
     name: 'trapIt',
     format: 'umd'
   },
