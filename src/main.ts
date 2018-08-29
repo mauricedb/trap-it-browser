@@ -1,6 +1,7 @@
+const windowErrorListener = (evt: ErrorEvent): void => {
+  console.log(evt);
+};
 
-export class Demo {
-    greet(){
-        console.log('hi there')
-    }
-}
+export const trapGlobalErrors = () => {
+  window.addEventListener('error', windowErrorListener);
+};
