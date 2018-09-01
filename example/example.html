@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+        <button onclick="doesNotExist();">doesNotExist is not defined</button>
+        <button onclick="doesNotExistInTimeout();">doesNotExistInTimeout</button>
+    </div>
+
+    <div>
+        <button onclick="doesNotExistInPromise();">doesNotExistInPromise</button>
+        <button onclick="fetchFromNonExistingServer();">fetchFromNonExistingServer</button>
+        <button onclick="fetch404Page();">fetch404Page</button>
+    </div>
+
+    <div>
+        <button onclick="dumpErrors();">Dump errors</button>
+    </div>
+    <script src="../dist/trap-it.js"></script>
+    <script>    
+        trapIt.trapGlobalErrors();
+
+        function doesNotExist() {
+            theObjectDoesNotExist.toString();
+        }
+
+        function doesNotExistInTimeout() {
+            setTimeout(doesNotExist, 1000);
+        }
+
+        function doesNotExistInPromise() {
+            new Promise(function (_, reject) {
+                setTimeout(reject, 1000);
+            })
+
+        }
+
+        function fetchFromNonExistingServer() {
+            fetch('http://no-server.org')
+        }
+
+        function fetch404Page() {
+            fetch('http://TheProblemSolver.nl/no-such-page.html')
+                .then(rsp => rsp.ok ? rsp : Promise.reject(rsp));
+        }
+
+        function dumpErrors() {
+            var errors = trapIt.getAllErrors();
+            console.table(errors);
+        }
+    </script>
+</body>
+
+</html>
