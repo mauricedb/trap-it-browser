@@ -13,7 +13,6 @@ export const getAllErrors = () => {
   return errors;
 };
 
-
 const windowErrorListener = (evt: ErrorEvent): void => {
   try {
     console.error(`Unhandled promise rejection: ${evt.message}`);
@@ -45,14 +44,13 @@ const unhandledrejectionListener = (evt: PromiseRejectionEvent): void => {
     console.log('evt.reason = Error', evt.reason instanceof Error);
     console.log('evt.reason = Response', evt.reason instanceof Response);
 
-    console.error(`Unhandled promise rejection: ${evt.reason}`);
+    console.error(`Uncaught (in promise)`, evt.reason);
 
-    
     const error = new Error(`Unhandled promise rejection: ${evt.reason}`);
 
     addError(error);
 
-    evt.preventDefault();
+    // evt.preventDefault();
   } catch (err) {
     console.error(`Trap-it: ${err}`);
   }
