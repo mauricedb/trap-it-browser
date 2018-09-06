@@ -5,6 +5,8 @@ import {
   trapGlobalErrors
 } from './trap-it';
 
+jest.mock('./error-record');
+
 describe('Trap it', () => {
   describe('trapGlobalErrors', () => {
     it('should be a function', () => {
@@ -17,9 +19,9 @@ describe('Trap it', () => {
   });
 
   describe('errors', () => {
-    beforeAll(() => {
-      Date.now = jest.fn(() => 1536000000000);
-    });
+    // beforeAll(() => {
+    //   Date.now = jest.fn(() => 1536000000000);
+    // });
 
     beforeEach(() => {
       clearAllErrors();
@@ -33,25 +35,17 @@ describe('Trap it', () => {
     it('can add', () => {
       addError(new Error('Some message'));
       const allErrors = getAllErrors();
-      delete allErrors[0].stack;
-      delete allErrors[0].secondsActive;
 
-      expect(allErrors).toEqual([
-        {
-          message: 'Some message',
-          name: 'Error',
-          when: '2018-09-03T18:40:00.000Z'
-        }
-      ]);
+      expect(allErrors).toEqual([{}]);
     });
 
     it('can add and clear', () => {
-      expect(getAllErrors().length).toBe(0);
+      expect(getAllErrors()).toEqual([]);
       addError(new Error('A message'));
       addError(new Error('Another message'));
-      expect(getAllErrors().length).toBe(2);
+      expect(getAllErrors()).toEqual([{}, {}]);
       clearAllErrors();
-      expect(getAllErrors().length).toBe(0);
+      expect(getAllErrors()).toEqual([]);
     });
   });
 });
