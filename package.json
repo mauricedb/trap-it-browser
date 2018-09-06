@@ -7,11 +7,27 @@
   "author": "Maurice de Beijer <maurice.de.beijer@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "rollup --config"
+    "start": "rollup --config",
+    "test": "jest"
   },
   "devDependencies": {
+    "@types/jest": "^23.3.1",
+    "jest": "^23.5.0",
     "rollup": "^0.65.0",
     "rollup-plugin-typescript2": "^0.16.1",
+    "ts-jest": "^23.1.4",
     "typescript": "^3.0.1"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ],
+    "transform": {
+      "^.+\\.(ts|tsx)$": "ts-jest"
+    },
+    "testMatch": [
+      "**/?(*.)+(spec|test).ts?(x)"
+    ]
   }
 }

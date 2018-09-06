@@ -11,6 +11,6 @@ export class ErrorRecord {
     this.stack = error.stack;
     this.secondsActive = secondsActive;
 
-    this.when = new Date().toISOString();
+    this.when = new Date(Date.now()).toISOString();
   }
 }
