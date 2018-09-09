@@ -2,19 +2,20 @@ import {
   addError,
   clearAllErrors,
   getAllErrors,
-  trapGlobalErrors
+  init,
+  unhandledrejectionListener
 } from './trap-it';
 
 jest.mock('./error-record');
 
 describe('Trap it', () => {
-  describe('trapGlobalErrors', () => {
+  describe('initialization ', () => {
     it('should be a function', () => {
-      expect(typeof trapGlobalErrors).toBe('function');
+      expect(typeof init).toBe('function');
     });
 
     it('should have a single argument', () => {
-      expect(trapGlobalErrors.length).toBe(1);
+      expect(init.length).toBe(1);
     });
   });
 
@@ -46,6 +47,23 @@ describe('Trap it', () => {
       expect(getAllErrors()).toEqual([{}, {}]);
       clearAllErrors();
       expect(getAllErrors()).toEqual([]);
+    });
+  });
+
+  describe('unhandledrejectionListener', () => {
+    beforeEach(() => {
+      clearAllErrors();
+    });
+
+    it('can handle events', () => {
+      const e: any = new Event('');
+      // e.promise = {
+      //   then: () => {}
+      // };
+      e.reason = 'Some reason';
+
+      unhandledrejectionListener(e);
+      expect(getAllErrors()).toEqual([{}]);
     });
   });
 });

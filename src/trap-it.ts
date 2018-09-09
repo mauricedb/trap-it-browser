@@ -18,7 +18,7 @@ export const getAllErrors = () => {
 
 const windowErrorListener = (evt: ErrorEvent): void => {
   try {
-    console.error(`Unhandled promise rejection: ${evt.message}`);
+    console.error(`Unhandled error: ${evt.message}`);
 
     let error = evt.error || evt;
 
@@ -38,28 +38,24 @@ const windowErrorListener = (evt: ErrorEvent): void => {
   }
 };
 
-const unhandledrejectionListener = (evt: PromiseRejectionEvent): void => {
+export const unhandledrejectionListener = (
+  evt: PromiseRejectionEvent
+): void => {
   try {
-    console.log(
-      'evt instanceof PromiseRejectionEvent',
-      evt instanceof PromiseRejectionEvent
-    );
-    console.log('evt.reason = Error', evt.reason instanceof Error);
-    console.log('evt.reason = Response', evt.reason instanceof Response);
+    // console.log('evt.reason = Error', evt.reason instanceof Error);
 
     console.error(`Uncaught (in promise)`, evt.reason);
-
     const error = new Error(`Unhandled promise rejection: ${evt.reason}`);
 
     addError(error);
 
-    // evt.preventDefault();
+    evt.preventDefault();
   } catch (err) {
     console.error(`Trap-it: ${err}`);
   }
 };
 
-export const trapGlobalErrors = (evt: ErrorEvent) => {
+export const init = (options: any = {}) => {
   window.addEventListener('error', windowErrorListener);
   // Only supported by Chrome
   window.addEventListener('unhandledrejection', unhandledrejectionListener);
