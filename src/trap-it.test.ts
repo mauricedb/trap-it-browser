@@ -3,7 +3,8 @@ import {
   clearAllErrors,
   getAllErrors,
   init,
-  unhandledrejectionListener
+  unhandledRejectionListener,
+  windowErrorListener
 } from './trap-it';
 
 jest.mock('./error-record');
@@ -38,7 +39,7 @@ describe('Trap it', () => {
       );
       expect(window.addEventListener).toBeCalledWith(
         'unhandledrejection',
-        expect.any(Function)
+        unhandledRejectionListener
       );
     });
 
@@ -64,7 +65,7 @@ describe('Trap it', () => {
       expect(window.addEventListener).toHaveBeenCalledTimes(1);
       expect(window.addEventListener).toBeCalledWith(
         'unhandledrejection',
-        expect.any(Function)
+        unhandledRejectionListener
       );
     });
   });
@@ -100,19 +101,28 @@ describe('Trap it', () => {
     });
   });
 
-  describe('unhandledrejectionListener', () => {
+  describe('unhandledRejectionListener', () => {
     beforeEach(() => {
       clearAllErrors();
     });
 
     it('can handle events', () => {
       const e: any = new Event('');
-      // e.promise = {
-      //   then: () => {}
-      // };
-      e.reason = 'Some reason';
 
-      unhandledrejectionListener(e);
+      unhandledRejectionListener(e);
+      expect(getAllErrors()).toEqual([{}]);
+    });
+  });
+
+  describe('windowErrorListener', () => {
+    beforeEach(() => {
+      clearAllErrors();
+    });
+
+    it('can handle events', () => {
+      const e = new ErrorEvent('Some error');
+
+      windowErrorListener(e);
       expect(getAllErrors()).toEqual([{}]);
     });
   });

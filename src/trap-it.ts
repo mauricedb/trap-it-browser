@@ -17,9 +17,9 @@ export const getAllErrors = () => {
   return errors;
 };
 
-const windowErrorListener = (evt: ErrorEvent): void => {
+export const windowErrorListener = (evt: ErrorEvent): void => {
   try {
-    console.error(`Unhandled error: ${evt.message}`);
+    // console.error(`Unhandled error: ${evt.message}`);
 
     let error = evt.error || evt;
 
@@ -39,13 +39,13 @@ const windowErrorListener = (evt: ErrorEvent): void => {
   }
 };
 
-export const unhandledrejectionListener = (
+export const unhandledRejectionListener = (
   evt: PromiseRejectionEvent
 ): void => {
   try {
     // console.log('evt.reason = Error', evt.reason instanceof Error);
 
-    console.error(`Uncaught (in promise)`, evt.reason);
+    // console.error(`Uncaught (in promise)`, evt.reason);
     const error = new Error(`Unhandled promise rejection: ${evt.reason}`);
 
     addError(error);
@@ -62,9 +62,9 @@ export const init = (options: Partial<DefaultOptions> = {}) => {
   if (o.checkErrors) {
     window.addEventListener('error', windowErrorListener);
   }
-  
+
   if (o.checkUnhandledRejections) {
     // Only supported by Chrome
-    window.addEventListener('unhandledrejection', unhandledrejectionListener);
+    window.addEventListener('unhandledrejection', unhandledRejectionListener);
   }
 };
