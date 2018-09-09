@@ -1,4 +1,5 @@
 import { ErrorRecord } from './error-record';
+import { DefaultOptions } from './default-options';
 
 const startTime = Date.now();
 let errors: ErrorRecord[] = [];
@@ -55,8 +56,15 @@ export const unhandledrejectionListener = (
   }
 };
 
-export const init = (options: any = {}) => {
-  window.addEventListener('error', windowErrorListener);
-  // Only supported by Chrome
-  window.addEventListener('unhandledrejection', unhandledrejectionListener);
+export const init = (options: Partial<DefaultOptions> = {}) => {
+  const o = { ...new DefaultOptions(), ...options };
+
+  if (o.checkErrors) {
+    window.addEventListener('error', windowErrorListener);
+  }
+  
+  if (o.checkUnhandledRejections) {
+    // Only supported by Chrome
+    window.addEventListener('unhandledrejection', unhandledrejectionListener);
+  }
 };
