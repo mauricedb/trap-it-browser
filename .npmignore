@@ -1,0 +1,9 @@
+# Dependency directories
+node_modules/
+
+.rpt2_cache
+
+coverage
+
+src
+example
