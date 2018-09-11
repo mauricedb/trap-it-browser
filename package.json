@@ -2,7 +2,7 @@
   "name": "trap-it-browser",
   "version": "0.0.3",
   "description": "Log unhandled errors in the browser",
-  "main": "index.js",
+  "main": "dist/trap-it.js",
   "repository": "git@github.com:mauricedb/trap-it-browser.git",
   "author": "Maurice de Beijer <maurice.de.beijer@gmail.com>",
   "license": "MIT",
