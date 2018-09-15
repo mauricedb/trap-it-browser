@@ -8,7 +8,10 @@ export const clearAllErrors = () => {
   errors.length = 0;
 };
 
-const clearErrors = (toClear: ErrorRecord[]) => {};
+export const clearErrors = (toClear: ErrorRecord[]) => {
+  // Todo remove actual errors
+  errors.length = 0;
+};
 
 export const addError = (error: Error) => {
   const secondsActive = (Date.now() - startTime) / 1000;

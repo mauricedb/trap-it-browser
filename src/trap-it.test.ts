@@ -1,6 +1,7 @@
 import {
   addError,
   clearAllErrors,
+  clearErrors,
   getAllErrors,
   init,
   unhandledRejectionListener,
@@ -124,6 +125,38 @@ describe('Trap it', () => {
 
       windowErrorListener(e);
       expect(getAllErrors()).toEqual([{}]);
+    });
+  });
+
+  describe('clearErrors', () => {
+    beforeEach(() => {
+      clearAllErrors();
+    });
+
+    it('works without errors', () => {
+      clearErrors([]);
+    });
+
+    it('clears all errors', () => {
+      const errors: any[] = [{}, {}];
+      errors.forEach(element => {
+        addError(element);
+      });
+
+      expect(getAllErrors().length).toBe(2);
+      clearErrors(errors);
+      expect(getAllErrors().length).toBe(0);
+    });
+
+    it('clears one error of two', () => {
+      const errors: any[] = [{}, {}];
+      errors.forEach(element => {
+        addError(element);
+      });
+
+      expect(getAllErrors().length).toBe(2);
+      clearErrors([errors[0]]);
+      expect(getAllErrors().length).toBe(1);
     });
   });
 });
