@@ -7,6 +7,9 @@ let errors: ErrorRecord[] = [];
 export const clearAllErrors = () => {
   errors.length = 0;
 };
+
+const clearErrors = (toClear: ErrorRecord[]) => {};
+
 export const addError = (error: Error) => {
   const secondsActive = (Date.now() - startTime) / 1000;
   const errorRecord = new ErrorRecord(error, secondsActive);
@@ -56,6 +59,34 @@ export const unhandledRejectionListener = (
   }
 };
 
+const postErrors = async (options: DefaultOptions) => {
+  try {
+    var errors = getAllErrors();
+
+    if (errors.length) {
+      const rsp = await fetch(options.url, {
+        body: JSON.stringify(errors),
+        method: 'post'
+      });
+      if (!rsp.ok) {
+        throw new Error(rsp.statusText);
+      }
+
+      clearErrors(errors);
+    }
+  } catch (err) {
+    console.error(`Trap-it: ${err}`);
+  }
+};
+
+const aMinute = 60 * 1000;
+
+const setupErrorPosting = (options: DefaultOptions) => {
+  if (options.url) {
+    setInterval(() => postErrors(options), aMinute);
+  }
+};
+
 export const init = (options: Partial<DefaultOptions> = {}) => {
   const o = { ...new DefaultOptions(), ...options };
 
@@ -67,4 +98,6 @@ export const init = (options: Partial<DefaultOptions> = {}) => {
     // Only supported by Chrome
     window.addEventListener('unhandledrejection', unhandledRejectionListener);
   }
+
+  setupErrorPosting(o);
 };
