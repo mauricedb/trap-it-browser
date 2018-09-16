@@ -1,8 +1,9 @@
 import { DefaultOptions } from './default-options';
+import { getAllErrors, clearErrors } from './error-collection';
 
 const aMinute = 60 * 1000;
 
-const postErrors = async (options: DefaultOptions) => {
+async function postErrors(options: DefaultOptions) {
   try {
     var errors = getAllErrors();
 
@@ -23,7 +24,7 @@ const postErrors = async (options: DefaultOptions) => {
   } catch (err) {
     console.error(`Trap-it: ${err}`);
   }
-};
+}
 
 export const setupErrorPosting = (options: DefaultOptions) => {
   if (options.url) {
