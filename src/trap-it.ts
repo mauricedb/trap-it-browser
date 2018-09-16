@@ -1,27 +1,7 @@
 import { ErrorRecord } from './error-record';
 import { DefaultOptions } from './default-options';
-
-const startTime = Date.now();
-let errors: ErrorRecord[] = [];
-
-export const clearAllErrors = () => {
-  errors.length = 0;
-};
-
-export const clearErrors = (toClear: ErrorRecord[]) => {
-  // Todo remove actual errors
-  errors.length = 0;
-};
-
-export const addError = (error: Error) => {
-  const secondsActive = (Date.now() - startTime) / 1000;
-  const errorRecord = new ErrorRecord(error, secondsActive);
-  errors.push(errorRecord);
-};
-
-export const getAllErrors = () => {
-  return errors;
-};
+import { setupErrorPosting } from './error-posting';
+import { addError } from './error-collection';
 
 export const windowErrorListener = (evt: ErrorEvent): void => {
   try {
@@ -62,45 +42,17 @@ export const unhandledRejectionListener = (
   }
 };
 
-const postErrors = async (options: DefaultOptions) => {
-  try {
-    var errors = getAllErrors();
-
-    if (errors.length) {
-      const rsp = await fetch(options.url, {
-        body: JSON.stringify(errors),
-        method: 'post'
-      });
-      if (!rsp.ok) {
-        throw new Error(rsp.statusText);
-      }
-
-      clearErrors(errors);
-    }
-  } catch (err) {
-    console.error(`Trap-it: ${err}`);
-  }
-};
-
-const aMinute = 60 * 1000;
-
-const setupErrorPosting = (options: DefaultOptions) => {
-  if (options.url) {
-    setInterval(() => postErrors(options), aMinute);
-  }
-};
-
 export const init = (options: Partial<DefaultOptions> = {}) => {
-  const o = { ...new DefaultOptions(), ...options };
+  const actualOptions = { ...new DefaultOptions(), ...options };
 
-  if (o.checkErrors) {
+  if (actualOptions.checkErrors) {
     window.addEventListener('error', windowErrorListener);
   }
 
-  if (o.checkUnhandledRejections) {
+  if (actualOptions.checkUnhandledRejections) {
     // Only supported by Chrome
     window.addEventListener('unhandledrejection', unhandledRejectionListener);
   }
 
-  setupErrorPosting(o);
+  setupErrorPosting(actualOptions);
 };
