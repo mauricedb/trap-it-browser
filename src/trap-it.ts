@@ -17,7 +17,7 @@ export const windowErrorListener = (evt: ErrorEvent): void => {
       }
     }
 
-    addError(error);
+    addError(error, evt.filename);
 
     evt.preventDefault();
   } catch (err) {
@@ -34,7 +34,7 @@ export const unhandledRejectionListener = (
     // console.error(`Uncaught (in promise)`, evt.reason);
     const error = new Error(`Unhandled promise rejection: ${evt.reason}`);
 
-    addError(error);
+    addError(error, '');
 
     evt.preventDefault();
   } catch (err) {

@@ -29,5 +29,8 @@
     "testMatch": [
       "**/?(*.)+(spec|test).ts?(x)"
     ]
+  },
+  "dependencies": {
+    "hash-code": "1.0.1"
   }
 }
