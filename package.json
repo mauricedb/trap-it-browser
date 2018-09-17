@@ -1,6 +1,6 @@
 {
   "name": "trap-it-browser",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Log unhandled errors in the browser",
   "main": "dist/trap-it.js",
   "repository": "git@github.com:mauricedb/trap-it-browser.git",
