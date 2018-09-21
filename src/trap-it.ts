@@ -51,7 +51,10 @@ export const init = (options: Partial<DefaultOptions> = {}) => {
 
   if (actualOptions.checkUnhandledRejections) {
     // Only supported by Chrome
-    window.addEventListener('unhandledrejection', unhandledRejectionListener);
+    window.addEventListener(
+      'unhandledrejection',
+      unhandledRejectionListener as any
+    );
   }
 
   setupErrorPosting(actualOptions);

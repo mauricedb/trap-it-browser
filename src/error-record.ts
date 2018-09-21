@@ -3,13 +3,13 @@ import { hashCode } from 'hash-code';
 export class ErrorRecord {
   public message: string;
   public name: string;
-  public stack: string;
+  public stack: string | undefined;
   public fileName: string;
   public when: string;
   public secondsActive: number;
   public hashCode: string;
 
-  constructor(error: Error, fileName, secondsActive) {
+  constructor(error: Error, fileName: string, secondsActive: number) {
     this.message = error.message;
     this.name = error.name;
     this.stack = error.stack;
