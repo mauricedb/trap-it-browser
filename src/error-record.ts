@@ -18,7 +18,7 @@ export class ErrorRecord {
 
     this.when = new Date(Date.now()).toISOString();
     const errorHash = hashCode(this.message + this.fileName).toString(32);
-    const stackHash = hashCode(this.stack).toString(32);
+    const stackHash = hashCode(this.stack || '').toString(32);
     this.hashCode = `${errorHash}:${stackHash}`;
   }
 }
