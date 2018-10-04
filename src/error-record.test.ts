@@ -14,8 +14,8 @@ describe('An ErrorRecord', () => {
     expect(newErrors).toEqual(originalErrors);
   });
 
-  it.skip('has a predictable hascode', () => {
-    expect(originalErrors[0].hashCode).toBe('1bnjg3l:c2il0g');
-    expect(originalErrors[1].hashCode).toBe('m8ss2f:10j42cf');
+  it('has a predictable hascode', () => {
+    expect(originalErrors[0].hashCode).toBe('1bnjg3l:c2ji3f');
+    expect(originalErrors[1].hashCode).toBe('m8ss2f:10j4vfe');
   });
 });
