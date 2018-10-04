@@ -3,7 +3,7 @@ import { getAllErrors, clearErrors } from './error-collection';
 
 const aMinute = 60 * 1000;
 
-async function postErrors(options: DefaultOptions) {
+export async function postErrors(options: DefaultOptions) {
   if (!options.url) {
     return;
   }
