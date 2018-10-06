@@ -24,8 +24,10 @@
         <button onclick="dumpErrors();">Dump errors</button>
     </div>
     <script src="https://unpkg.com/trap-it-browser"></script>
-    <script>    
-        trapIt.init();
+    <script>
+        trapIt.init({
+            url: '/api/error-collector'
+        });
 
         function doesNotExist() {
             theObjectDoesNotExist.toString();
@@ -48,12 +50,19 @@
 
         function fetch404Page() {
             fetch('http://TheProblemSolver.nl/no-such-page.html')
-                .then(rsp => rsp.ok ? rsp : Promise.reject(rsp));
+                .then(function (rsp) {
+                    return rsp.ok ? rsp : Promise.reject(rsp);
+                });
         }
 
         function dumpErrors() {
             var errors = trapIt.getAllErrors();
-            console.table(errors);
+            if (console.table) {
+                console.table(errors);
+            }
+            else {
+                console.log(errors);
+            }
         }
     </script>
 </body>

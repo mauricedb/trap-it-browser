@@ -1,21 +1,7 @@
 import { ErrorRecord } from './error-record';
 import { DefaultOptions } from './default-options';
-
-const startTime = Date.now();
-let errors: ErrorRecord[] = [];
-
-export const clearAllErrors = () => {
-  errors.length = 0;
-};
-export const addError = (error: Error) => {
-  const secondsActive = (Date.now() - startTime) / 1000;
-  const errorRecord = new ErrorRecord(error, secondsActive);
-  errors.push(errorRecord);
-};
-
-export const getAllErrors = () => {
-  return errors;
-};
+import { setupErrorPosting } from './error-posting';
+import { addError } from './error-collection';
 
 export const windowErrorListener = (evt: ErrorEvent): void => {
   try {
@@ -31,7 +17,7 @@ export const windowErrorListener = (evt: ErrorEvent): void => {
       }
     }
 
-    addError(error);
+    addError(error, evt.filename);
 
     evt.preventDefault();
   } catch (err) {
@@ -48,7 +34,7 @@ export const unhandledRejectionListener = (
     // console.error(`Uncaught (in promise)`, evt.reason);
     const error = new Error(`Unhandled promise rejection: ${evt.reason}`);
 
-    addError(error);
+    addError(error, '');
 
     evt.preventDefault();
   } catch (err) {
@@ -57,14 +43,19 @@ export const unhandledRejectionListener = (
 };
 
 export const init = (options: Partial<DefaultOptions> = {}) => {
-  const o = { ...new DefaultOptions(), ...options };
+  const actualOptions = { ...new DefaultOptions(), ...options };
 
-  if (o.checkErrors) {
+  if (actualOptions.checkErrors) {
     window.addEventListener('error', windowErrorListener);
   }
 
-  if (o.checkUnhandledRejections) {
+  if (actualOptions.checkUnhandledRejections) {
     // Only supported by Chrome
-    window.addEventListener('unhandledrejection', unhandledRejectionListener);
+    window.addEventListener(
+      'unhandledrejection',
+      unhandledRejectionListener as any
+    );
   }
+
+  setupErrorPosting(actualOptions);
 };
