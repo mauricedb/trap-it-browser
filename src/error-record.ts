@@ -8,6 +8,7 @@ export class ErrorRecord {
   public when: string;
   public secondsActive: number;
   public hashCode: string;
+  public count: number;
 
   constructor(error: Error, fileName: string, secondsActive: number) {
     this.message = error.message;
@@ -20,5 +21,6 @@ export class ErrorRecord {
     const errorHash = hashCode(this.message + this.fileName).toString(32);
     const stackHash = hashCode(this.stack || '').toString(32);
     this.hashCode = `${errorHash}:${stackHash}`;
+    this.count = 1;
   }
 }

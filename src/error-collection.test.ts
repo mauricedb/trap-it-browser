@@ -5,14 +5,13 @@ import {
   clearErrors
 } from './error-collection';
 
-jest.mock('./error-record');
-
 describe('error-collection', () => {
-  describe('getAllErrors', () => {
-    // beforeAll(() => {
-    //   Date.now = jest.fn(() => 1536000000000);
-    // });
+  let now = 1536000000000;
+  beforeAll(() => {
+    Date.now = jest.fn(() => now);
+  });
 
+  describe('getAllErrors', () => {
     beforeEach(() => {
       clearAllErrors();
     });
@@ -26,14 +25,14 @@ describe('error-collection', () => {
       addError(new Error('Some message'));
       const allErrors = getAllErrors();
 
-      expect(allErrors).toEqual([{}]);
+      expect(allErrors).toMatchObject([{ message: 'Some message', count: 1 }]);
     });
 
     it('can add and clear', () => {
       expect(getAllErrors()).toEqual([]);
       addError(new Error('A message'));
       addError(new Error('Another message'));
-      expect(getAllErrors()).toEqual([{}, {}]);
+      expect(getAllErrors()).toMatchObject([{}, {}]);
       clearAllErrors();
       expect(getAllErrors()).toEqual([]);
     });
@@ -49,10 +48,8 @@ describe('error-collection', () => {
     });
 
     it('clears all errors', () => {
-      const errors: any[] = [{}, {}];
-      errors.forEach(element => {
-        addError(element);
-      });
+      const errors: any[] = [{ message: '1' }, { message: '2' }];
+      errors.forEach(element => addError(element));
 
       expect(getAllErrors().length).toBe(2);
       clearErrors(getAllErrors());
@@ -60,14 +57,54 @@ describe('error-collection', () => {
     });
 
     it('clears one error of two', () => {
-      const errors: any[] = [{}, {}, {}];
-      errors.forEach(element => {
-        addError(element);
-      });
+      const errors: any[] = [
+        { message: '1' },
+        { message: '2' },
+        { message: '3' }
+      ];
+      errors.forEach(element => addError(element));
 
       expect(getAllErrors().length).toBe(3);
       clearErrors([getAllErrors()[0]]);
       expect(getAllErrors().length).toBe(2);
+    });
+  });
+
+  describe('addError', () => {
+    beforeEach(() => {
+      clearAllErrors();
+    });
+
+    it('can get all', () => {
+      const allErrors = getAllErrors();
+      expect(allErrors).toEqual([]);
+    });
+
+    it('can add', () => {
+      addError(new Error('Some message'));
+      const allErrors = getAllErrors();
+
+      expect(allErrors.length).toBe(1);
+    });
+
+    it('can add two after two minutes', () => {
+      addError(new Error('Some message'));
+      now += 1000 * 60 * 2;
+      addError(new Error('Some message'));
+      const allErrors = getAllErrors();
+
+      expect(allErrors.length).toBe(2);
+    });
+
+    it('can add two after a second', () => {
+      const error = new Error('Some message');
+      addError(error);
+      now += 1000;
+      addError(error);
+      const allErrors = getAllErrors();
+
+      expect(allErrors.length).toBe(1);
+      expect(allErrors[0]).toMatchObject({ count: 2 });
     });
   });
 });
