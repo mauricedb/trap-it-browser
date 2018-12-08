@@ -9,7 +9,7 @@ jest.mock('./error-record');
 
 describe('Trap it', () => {
   describe('initialization ', () => {
-    let addEventListener;
+    let addEventListener: (type:string, fn: any) => void;
     beforeEach(() => {
       addEventListener = window.addEventListener;
       window.addEventListener = jest.fn();
