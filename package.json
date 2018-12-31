@@ -11,7 +11,7 @@
     "test": "jest"
   },
   "devDependencies": {
-    "@types/jest": "23.3.10",
+    "@types/jest": "23.3.11",
     "jest": "23.6.0",
     "rollup": "1.0.0",
     "rollup-plugin-commonjs": "9.2.0",
